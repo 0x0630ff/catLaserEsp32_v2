@@ -31,8 +31,8 @@ namespace myLaserSetup {
                 digitalWrite(this->laserPin, state);
             }
 
-    };
+    };  // end of class MyLaser
 
-}
+}  // end of namespace myLaserSetup
 
 #endif

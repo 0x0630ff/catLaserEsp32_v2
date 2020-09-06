@@ -20,52 +20,78 @@ using namespace myLaserSetup;
 #define joyStickBTN     15     // input
 #define SERVO1          33     // output - bottom servo
 #define SERVO2          27     // output - upper servo
-#define LASER           13     // output - also D13 LED.
+#define LASER           12     // output
+#define led13           13     // output
 
-MyButton button1(BUTTON);
-MyJoystick joystick(joyStickX, joyStickY, joyStickBTN);
-MyServo servo1(SERVO1);
-MyServo servo2(SERVO2);
-MyLaser laser(LASER);
-
-// attachInterrupt( digitalPinToInterrupt(button1.buttonPin), laser.changeState, FALLING );
+MyButton    button1     (BUTTON);
+MyServo     servo1      (SERVO1);
+MyServo     servo2      (SERVO2);
+MyJoystick  joystick    (joyStickX, joyStickY, joyStickBTN);
+MyLaser     laser       (LASER);
 
 namespace TheCatToy {
 
     class CatLaser {
+        
         private:
             String title = "The Cat Toy";
+            bool state = false;
+            bool manualMode = false;
+            bool mmState = false;
+            bool ledState = false;
         
         public:
             bool running = false;
 
-            void startstop() {
-                running = !running;
-                laser.changeState();
+            CatLaser() {
+                pinMode(led13, OUTPUT);
             }
 
             void run() {
-                if (button1.state() & !running) {
-                    startstop();
-                } 
-                else if (button1.state() & running) {
-                    startstop();
-                }
-
                 if (running) {
-                    Serial.println("RUNNING");
-                    // replace this with other function to start servos etc.
-                    servo1.move(servo1.servoAngle);  //  <---- this has to go!
-                } 
-                else {
-                    // laser should be off
+                    if (manualMode) {
+                        int x = map(joystick.x(), 0, 180, 0, 1027);
+                        int y = map(joystick.y(), 0, 180, 0, 1027);
+                        servo1.move(x);
+                        servo2.move(y);
+                    }
+                    else {
+                        autoMove(random(5,25));
+                    }
                 }
-
-                delay(5);
             }
 
-    };
+            void startstop() {
+                if ( !state & button1.state() ) {
+                    laser.changeState();
+                    running = !running;
+                    state = true;
+                    delay(75);
+                } 
+                else if ( state & !button1.state() ) {
+                    state = false;
+                }
+            }
 
-}
+            void setManualMode() {
+                if ( ( !mmState ) & joystick.getBtnState() ) {
+                    mmState = true;
+                    manualMode = !manualMode;
+                    ledState = !ledState;
+                    digitalWrite(led13, ledState);
+                    delay(75);
+                }
+                else if ( mmState & ( !joystick.getBtnState() ) ) {
+                    mmState = false;
+                }
+            }
+
+            void autoMove(int rate) {
+                // auto move stuff...
+            }
+
+    };  // end of class CatLaser
+
+}  // end of namespace TheCatToy
 
 #endif

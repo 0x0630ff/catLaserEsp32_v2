@@ -3,11 +3,13 @@
 
 #include <Arduino.h>
 
-// pinMode(joyStickBTN, INPUT);
-// pinMode(joyStickX, INPUT);
-// pinMode(joyStickY, INPUT);
-
 namespace myJoystickSetup {
+
+    struct Values {
+        int xVal;
+        int yVal;
+        int btnState;
+    };
 
     class MyJoystick {
         private:
@@ -15,24 +17,37 @@ namespace myJoystickSetup {
             int pinY;
             int pinBTN;
 
-            struct Values {
-                int xVal;
-                int yVal;
-                int btnVal;
-            };
-
         public:
+            Values state;
+
             MyJoystick(int x, int y, int btn) {
-                this->pinX = x;
-                this->pinY = y;
-                this->pinBTN = btn;
+                this->pinX      = x;
+                this->pinY      = y;
+                this->pinBTN    = btn;
+                pinMode(this->pinX, INPUT);
+                pinMode(this->pinY, INPUT);
+                pinMode(this->pinBTN, INPUT_PULLUP);
             }
 
             Values read() {
-                int xVal = analogRead(pinX);
-                int yVal = analogRead(pinY);
-                int btnState = digitalRead(pinBTN);
-                return {xVal, yVal, btnState};
+                state.xVal      = map(analogRead(this->pinX), 0, 1027, 0, 100);
+                state.yVal      = map(analogRead(this->pinY), 0, 1027, 0, 100);
+                state.btnState  = !digitalRead(this->pinBTN);
+                return state;
+            }
+
+            int x() {
+                read();
+                return state.xVal;
+            }
+
+            int y() {
+                read();
+                return state.yVal;
+            }
+
+            int getBtnState() {
+                return !digitalRead(this->pinBTN);
             }
 
     };  // end of class MyJoystick

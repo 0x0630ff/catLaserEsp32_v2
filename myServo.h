@@ -40,7 +40,7 @@ namespace myServoSetup {
                 }
                 servoAngle += servoDirection;
             }
-
+            
     };  // end of class myServos
     
 }  // end of namespace myServoSettup
