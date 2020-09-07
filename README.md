@@ -26,6 +26,7 @@ The latest attempt and making my cat(s) happy.
 - Incorporate the Blynk library to use remote control via wifi.
 - Add bluetooth/ble
 - Add more buttons or switches to change to different running modes.
+- Make a second one for my other cat!
 - uh...
 
 #### Parts list:
