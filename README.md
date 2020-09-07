@@ -29,7 +29,7 @@ The latest attempt and making my cat(s) happy.
     * 180 pointing right
     * 90 straight ahead.
 - Get the timers to work.
-    * Servos are moving too fast.
+    * Servos are moving too fast. (or too slow or even not at all...)
 
 #### Plans:
 - Add dual core usage for the ESP32's two cores.
