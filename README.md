@@ -1,6 +1,9 @@
 # The Cat Laser Toy - V2.
 The latest attempt and making my cat(s) happy.
 
+### Project In Progress.
+Part while the kinks and bugs are slowly squashed.
+
 ### Parts list:
 * ESP32 HUZZAH32 Feather - https://www.adafruit.com/product/3405
 * 1x Push Button - https://www.adafruit.com/product/367
