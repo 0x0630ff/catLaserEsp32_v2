@@ -17,16 +17,24 @@ namespace myServoSetup {
             Servo servo;
             int servoAngle = 90;
             int servoDirection = 1;
+            int minimum;
+            int maximum;
+            int range;
+            int midpoint;
 
-            MyServo(int servo) {
+            MyServo(int servo, int _min = 0, int _max = 180) {
                 Serial.println(servo);
                 this->servoPin = servo;
+                this->minimum = _min;
+                this->maximum = _max;
+                this->range = _max - _min;
+                this->midpoint = (this->range / 2) + _min;
                 this->init();
             }
 
             void init() {
-                servo.attach(this->servoPin, servoMin, servoMax);
-                servo.write(servoAngle);
+                servo.attach(this->servoPin, servoMax, servoMin);
+                servo.write(this->midpoint);
             }
 
             void move(int angle) {
@@ -35,12 +43,16 @@ namespace myServoSetup {
             }
 
             void checkDirection() {
-                if (servoAngle == 180 || servoAngle == 0) {
+                if (servoAngle == this->maximum || servoAngle == this->minimum) {
                     servoDirection *= -1;
                 }
                 servoAngle += servoDirection;
             }
-            
+
+            void writeMicroseconds(int ms) {
+                servo.writeMicroseconds(ms);
+            }
+
     };  // end of class myServos
     
 }  // end of namespace myServoSettup
