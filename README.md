@@ -37,3 +37,5 @@ The latest attempt and making my cat(s) happy.
 - 1x Laser diode - https://www.adafruit.com/product/1054
 - 2x Servos and servo arm kit (Mini Pan-Tilt Kit) - https://www.adafruit.com/product/1967
     * You could use your own 2 servo set up as well.
+- Bread board.
+- Wires...
