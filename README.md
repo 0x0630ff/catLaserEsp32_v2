@@ -14,10 +14,10 @@ Pardon while the kinks and bugs are slowly squashed.
 * 2x Servos and servo arm kit - https://www.adafruit.com/product/1967
 
 #### Usage:
-The push button will turn on the laser and start the auto run mode. <br>
-- Auto mode still needs a lot of help... <br>
-To use the joystick, press down on the joystick and the D13 led will light up to show that manual mode is active.<br>
-Joy stick can then move the servo arm around. <-- This is still a bit off.<br>
+- The push button will turn on the laser and start the auto run mode. 
+- Auto mode still needs a lot of help... 
+- To use the joystick, press down on the joystick and the D13 led will light up to show that manual mode is active. 
+- Joy stick can then move the servo arm around. <-- This is still a bit off. 
 
 #### Plans:
 * Incorporate the Blynk library to use remote control via wifi.
