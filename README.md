@@ -29,6 +29,8 @@ The latest attempt and making my cat(s) happy.
 
 #### Parts list:
 - ESP32 HUZZAH32 Feather - https://www.adafruit.com/product/3405
+    * Chosen for wifi/bluetooth connectivity and it's dual core support.
+    * Other boards can be used if necesary. (Untested, code writen for esp32)
 - 1x Laser diode - https://www.adafruit.com/product/1054
     * Connected to pin 12 on ESP32 Feather Huzzah32
 - 1x Push Button - https://www.adafruit.com/product/367
