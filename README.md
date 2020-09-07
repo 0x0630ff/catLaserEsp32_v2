@@ -12,8 +12,10 @@ The latest attempt and making my cat(s) happy.
     * any basic momentary push button switch. 
     * (You can edit the code to work with an spst slide switch too...)
 - 1x Joystick - https://www.adafruit.com/product/512
+    * Any joy stick with a center button press
 - 1x Laser diode - https://www.adafruit.com/product/1054
-- 2x Servos and servo arm kit - https://www.adafruit.com/product/1967
+- 2x Servos and servo arm kit (Mini Pan-Tilt Kit) - https://www.adafruit.com/product/1967
+    * You could use your own 2 servo set up as well.
 
 #### Usage:
 - The push button will turn on the laser and start the auto run mode. 
@@ -22,6 +24,7 @@ The latest attempt and making my cat(s) happy.
 - Joy stick can then move the servo arm around. <-- This is still a bit off. 
 
 #### Plans:
+- Add dual core usage for the ESP32's two cores.
 - Incorporate the Blynk library to use remote control via wifi.
 - Add bluetooth/ble
 - uh...
