@@ -1,4 +1,4 @@
-# catLaserEsp32_v2
+# The Cat Laser Toy - V2.
 The latest attempt and making my cat(s) happy.
 
 ### Parts list:
