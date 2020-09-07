@@ -10,3 +10,7 @@ The latest attempt and making my cat(s) happy.
 * 1x Laser diode - https://www.adafruit.com/product/1054
 * 2x Servos and servo arm kit - https://www.adafruit.com/product/1967
 
+#### Plans:
+* Incorporate the Blynk library to use remote control via wifi.
+* Add bluetooth/ble
+* uh...
