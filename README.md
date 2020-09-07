@@ -23,6 +23,14 @@ The latest attempt and making my cat(s) happy.
 - To use the joystick, press down on the joystick and the D13 led will light up to show that manual mode is active. 
 - Joy stick can then move the servo arm around. <-- This is still a bit off. 
 
+#### To Do:
+- Fix the servo angle values. 
+    * 0 degrees on bottom servo should be pointing left
+    * 180 pointing right
+    * 90 straight ahead.
+- Get the timers to work.
+    * Servos are moving too fast.
+
 #### Plans:
 - Add dual core usage for the ESP32's two cores.
 - Incorporate the Blynk library to use remote control via wifi.
