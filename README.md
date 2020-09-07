@@ -52,3 +52,5 @@ The latest attempt and making my cat(s) happy.
     * Use a longer breadboard to mount the mini pan tilt kit to the breadboard with header pins or any other method.
 - Wires...
     * I prefer wires cut to the proper length to avoid the servos catching them and pulling them out of place. (It also looks better)
+
+Total cost for parts is about $55-$65 or so depending on what you already have or need.
