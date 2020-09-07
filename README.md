@@ -25,6 +25,7 @@ The latest attempt and making my cat(s) happy.
 - Add dual core usage for the ESP32's two cores.
 - Incorporate the Blynk library to use remote control via wifi.
 - Add bluetooth/ble
+- Add more buttons or switches to change to different running modes.
 - uh...
 
 #### Parts list:
