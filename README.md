@@ -47,6 +47,6 @@ The latest attempt and making my cat(s) happy.
     * Top servo (Vertical movement) connected to pin 27
     * You could use your own 2 servo set up as well.
 - Bread board.
-    * Use a longer breadboard to mount the mini pan tilt kit to the bread board with header pins or any other method.
+    * Use a longer breadboard to mount the mini pan tilt kit to the breadboard with header pins or any other method.
 - Wires...
     * I prefer wires cut to the proper length to avoid the servos catching them and pulling them out of place. (It also looks better)
