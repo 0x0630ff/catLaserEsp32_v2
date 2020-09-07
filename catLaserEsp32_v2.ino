@@ -1,7 +1,7 @@
 // CAT LASER TOY V2.
 // BETTER AND COOLER.
-#include <Arduino.h>
 
+#include <Arduino.h>
 #include "TheCatToy.h"
 
 using namespace TheCatToy;
@@ -20,8 +20,8 @@ void manualMode() {
 void setup() {
     Serial.begin(115200);
     Serial.println("Starting CAT LASER TOY V2!!!!");
-    attachInterrupt(21, startStop, CHANGE);
-    attachInterrupt(15, manualMode, CHANGE);
+    attachInterrupt(BUTTON, startStop, CHANGE);
+    attachInterrupt(joyStickBTN, manualMode, CHANGE);
 }
 
 void loop() {

@@ -4,13 +4,6 @@
 #include <Arduino.h>
 
 namespace myJoystickSetup {
-
-    struct Values {
-        int xVal;
-        int yVal;
-        int btnState;
-    };
-
     class MyJoystick {
         private:
             int pinX;
@@ -18,7 +11,14 @@ namespace myJoystickSetup {
             int pinBTN;
 
         public:
-            Values state;
+
+            struct Values {
+                int xVal;
+                int yVal;
+                int btnState;
+            } state;
+
+            // Values ;
 
             MyJoystick(int x, int y, int btn) {
                 this->pinX      = x;
@@ -30,20 +30,20 @@ namespace myJoystickSetup {
             }
 
             Values read() {
-                state.xVal      = map(analogRead(this->pinX), 0, 1027, 0, 100);
-                state.yVal      = map(analogRead(this->pinY), 0, 1027, 0, 100);
+                state.xVal      = map(analogRead(this->pinX), 0, 4095, 1000, 0);
+                state.yVal      = map(analogRead(this->pinY), 0, 4095, 1000, 0);
                 state.btnState  = !digitalRead(this->pinBTN);
                 return state;
             }
 
             int x() {
-                read();
-                return state.xVal;
+                Values val = read();
+                return val.xVal;
             }
 
             int y() {
-                read();
-                return state.yVal;
+                Values val = read();
+                return val.yVal;
             }
 
             int getBtnState() {

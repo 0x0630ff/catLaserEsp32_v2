@@ -1,0 +1,7 @@
+{
+    "board": "esp32:esp32:featheresp32",
+    "configuration": "FlashFreq=80,UploadSpeed=921600,DebugLevel=none,PartitionScheme=default",
+    "sketch": "catLaserEsp32_v2.ino",
+    "port": "COM5",
+    "programmer": "AVR ISP"
+}

@@ -13,23 +13,25 @@ using namespace myButtonSetup;
 using namespace myJoystickSetup;
 using namespace myLaserSetup;
 
-// define pins
-#define BUTTON          21     // input
-#define joyStickX       14     // input
-#define joyStickY       32     // input
-#define joyStickBTN     15     // input
-#define SERVO1          33     // output - bottom servo
-#define SERVO2          27     // output - upper servo
-#define LASER           12     // output
-#define led13           13     // output
-
-MyButton    button1     (BUTTON);
-MyServo     servoX      (SERVO1);
-MyServo     servoY      (SERVO2, 45, 135);
-MyJoystick  joystick    (joyStickX, joyStickY, joyStickBTN);
-MyLaser     laser       (LASER);
-
 namespace TheCatToy {
+
+    // define pins
+    int BUTTON          =   21;     // input
+    int joyStickX       =   14;     // input
+    int joyStickY       =   32;     // input
+    int joyStickBTN     =   15;     // input
+    int SERVO1          =   33;     // output - bottom servo
+    int SERVO2          =   27;     // output - upper servo
+    int LASER           =   12;     // output
+    int led13           =   13;     // output
+
+    MyButton    button1     (BUTTON);
+    MyServo     servoX      (SERVO1);
+    MyServo     servoY      (SERVO2);
+    MyJoystick  joystick    (joyStickX, joyStickY, joyStickBTN);
+    MyLaser     laser       (LASER);
+
+    bool debug = false;
 
     class CatLaser {
 
@@ -46,28 +48,31 @@ namespace TheCatToy {
 
             CatLaser() {
                 pinMode(led13, OUTPUT);
-                servo.write(90);
             }
 
             void run() {
                 if (running) {
                     if (manualMode) {
-                        int x = map(joystick.x(), 0, 1027, servoX.minimum, servoX.maximum);
-                        int y = map(joystick.y(), 0, 1027, servoY.minimum, servoY.maximum);
+                        int x = map(joystick.x(), 0, 1000, servoX.minimum, servoX.maximum);
+                        int y = map(joystick.y(), 0, 1000, servoY.minimum, servoY.maximum);
 
-                        Serial.print("X: ");
-                        Serial.print(x);
-                        Serial.print(" | Y: ");
-                        Serial.println(y);
-
+                        if (debug) {
+                            Serial.print("X: ");
+                            Serial.print(joystick.x());
+                            Serial.print(" | Y: ");
+                            Serial.println(joystick.y());
+                        }
+                        
                         servoX.move(x);
                         servoY.move(y);
                     }
                     else {
+                        if (debug) {Serial.println("Auto Mode Running");}
                         autoMove(random(5,25));
                     }
                 }  
-                else {
+                else if (!running) {
+                    if (debug) {Serial.println("Not Running... Centered.");}
                     servoX.move(servoX.midpoint);
                     servoY.move(servoY.midpoint);
                 }
@@ -108,24 +113,25 @@ namespace TheCatToy {
                 // servoY.servoAngle = servoY.servoAngle * (millis() - prevTime);
                 // servoY.move(servoY.servoAngle);
 
-                Serial.println("STARTING TEST");
-
-                for (int pos=1; pos<179; pos++) {
-                    Serial.println(pos);
-                    servoX.servo.write(pos);
-                    delay(500);
+                if (debug) {
+                    Serial.println("STARTING TEST");
+                    Serial.print("RATE: ");
+                    Serial.println(rate);
                 }
 
-                delay(3500);
+                // for (int pos=1; pos<179; pos++) {
+                //     Serial.println(pos);
+                //     servoX.servo.write(pos);
+                //     delay(500);
+                // }
 
+                // delay(3500);
 
                 // int radX = servoX.servoAngle * 0.0174532 + servoX.servoDirection;
                 // servoX.move(radX);
 
                 // int radY = servoY.servoAngle * 0.0174532 + servoY.servoDirection;
                 // servoY.move(radY);
-
-
 
             }
 

@@ -7,11 +7,10 @@ namespace myButtonSetup {
 
     class MyButton {
         private:
-            bool pressed;
             int buttonPin;
+            bool pressed;
 
         public:
-        
             MyButton(int _button) {
                 this->buttonPin = _button;
                 pinMode(this->buttonPin, INPUT_PULLUP);
