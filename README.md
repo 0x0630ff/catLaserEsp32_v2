@@ -29,12 +29,12 @@ The latest attempt and making my cat(s) happy.
 
 #### Parts list:
 - ESP32 HUZZAH32 Feather - https://www.adafruit.com/product/3405
+- 1x Laser diode - https://www.adafruit.com/product/1054
 - 1x Push Button - https://www.adafruit.com/product/367
     * any basic momentary push button switch. 
     * (You can edit the code to work with an spst slide switch too...)
 - 1x Joystick - https://www.adafruit.com/product/512
     * Any joy stick with a center button press
-- 1x Laser diode - https://www.adafruit.com/product/1054
 - 2x Servos and servo arm kit (Mini Pan-Tilt Kit) - https://www.adafruit.com/product/1967
     * You could use your own 2 servo set up as well.
 - Bread board.
