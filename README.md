@@ -7,10 +7,10 @@ The latest attempt and making my cat(s) happy.
 - Pardon while the kinks and bugs are slowly squashed.
 
 #### Usage:
-- The push button will turn on the laser and start the auto run mode. 
-    * Auto mode still needs a lot of help... 
+- The push button/switch will turn on the laser and start the auto run mode. 
+    * Auto mode still needs some help. it 'works' for now though!
 - To use the joystick, press down on the joystick and the D13 led will light up to show that manual mode is active. 
-- Joy stick can then move the servo arm around. <-- This is still a bit off. 
+- Joy stick can then move the servo arm around. <-- This is still a bit off. I may need a better quality joystick for this.
 
 #### To Do:
 - Fix the servo angle values. 
