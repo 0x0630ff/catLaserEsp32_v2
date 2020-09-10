@@ -5,7 +5,7 @@
 #include <Arduino.h>
 #include <ESP32Servo.h>
 
-namespace myServoSetup {
+namespace TheCatToy {
 
     class MyServo {
         private:
@@ -15,31 +15,50 @@ namespace myServoSetup {
             
         public:
             Servo servo;
-            int angle = 90;
-            int servoDirection = 1;
+            float angle;
+            float servoDirection = 1;
+            float rate;
             int minimum;
             int maximum;
             int range;
             int midpoint;
+            float rateFactor = 0.2;
 
-            MyServo(int _servo, int _min = 0, int _max = 180) {
+            MyServo(int _servo, int _min = 0, int _max = 180, int _rate=1) {
                 Serial.println(_servo);
                 this->servoPin = _servo;
                 this->minimum = _min;
                 this->maximum = _max;
                 this->range = _max - _min;
-                this->midpoint = (this->range / 2) + _min;
+                this->rate = _rate * this->rateFactor;
+                this->midpoint = this->minimum + (this->range / 2);
+                this->angle = this->midpoint;
                 this->init();
             }
 
             void init() {
-                servo.attach(this->servoPin, this->servoMin, this->servoMax);
-                servo.write(this->midpoint);
+                this->servo.attach(this->servoPin, this->servoMin, this->servoMax);
+                this->servo.write(this->midpoint);
+            }
+            
+            void move() {
+                if (this->angle <= this->maximum && this->angle >= this->minimum){
+                    this->checkDirection();
+                    this->servo.write(this->angle);
+                }
+                else {
+                    this->servoDirection *= -1;
+                }
             }
 
-            void move(int _angle) {
-                checkDirection();
-                servo.write(_angle);
+            void moveTo(int _angle) {
+                if (_angle <= this->maximum && _angle >= this->minimum){
+                    this->checkDirection();
+                    this->servo.write(_angle);
+                }
+                else {
+                    this->servoDirection *= -1;
+                }
             }
 
             void checkDirection() {
@@ -50,7 +69,13 @@ namespace myServoSetup {
             }
 
             void writeMicroseconds(int ms) {
-                servo.writeMicroseconds(ms);
+                this->servo.writeMicroseconds(ms);
+            }
+
+            void setServo(float _angle) {
+                this->angle = _angle;
+                this->checkDirection();
+                this->move();
             }
 
     };  // end of class myServos

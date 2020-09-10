@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 
-namespace myButtonSetup {
+namespace TheCatToy {
 
     class MyButton {
         private:

@@ -20,7 +20,7 @@ void manualMode() {
 void setup() {
     Serial.begin(115200);
     Serial.println("Starting CAT LASER TOY V2!!!!");
-    attachInterrupt(BUTTON, startStop, CHANGE);
+    // attachInterrupt(SWITCH, startStop, CHANGE);
     attachInterrupt(joyStickBTN, manualMode, CHANGE);
 }
 

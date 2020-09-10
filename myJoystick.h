@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 
-namespace myJoystickSetup {
+namespace TheCatToy {
     class MyJoystick {
         private:
             int pinX;
@@ -18,8 +18,6 @@ namespace myJoystickSetup {
                 int btnState;
             } state;
 
-            // Values ;
-
             MyJoystick(int x, int y, int btn) {
                 this->pinX      = x;
                 this->pinY      = y;
@@ -30,19 +28,21 @@ namespace myJoystickSetup {
             }
 
             Values read() {
-                state.xVal      = map(analogRead(this->pinX), 0, 4095, 1000, 0);
-                state.yVal      = map(analogRead(this->pinY), 0, 4095, 1000, 0);
-                state.btnState  = !digitalRead(this->pinBTN);
+                // state.xVal      = analogRead(this->pinX);
+                // state.yVal      = analogRead(this->pinY);
+                this->state.xVal      = map(analogRead(this->pinX), 0, 4095, 1000, 0);
+                this->state.yVal      = map(analogRead(this->pinY), 0, 4095, 1000, 0);
+                this->state.btnState  = !digitalRead(this->pinBTN);
                 return state;
             }
 
             int x() {
-                Values val = read();
+                Values val = this->read();
                 return val.xVal;
             }
 
             int y() {
-                Values val = read();
+                Values val = this->read();
                 return val.yVal;
             }
 

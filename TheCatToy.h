@@ -6,16 +6,19 @@
 #include "myLaser.h"
 #include "myServo.h"
 #include "myButton.h"
+#include "mySwitch.h"
 #include "myJoystick.h"
 
-using namespace myServoSetup;
-using namespace myButtonSetup;
-using namespace myJoystickSetup;
-using namespace myLaserSetup;
+// using namespace myServoSetup;
+// using namespace myButtonSetup;
+// using namespace mySwitchSetup;
+// using namespace myJoystickSetup;
+// using namespace myLaserSetup;
 
 namespace TheCatToy {
 
     // define pins
+    int SWITCH          =   21;
     int BUTTON          =   21;     // input
     int joyStickX       =   14;     // input
     int joyStickY       =   32;     // input
@@ -25,13 +28,15 @@ namespace TheCatToy {
     int LASER           =   12;     // output
     int led13           =   13;     // output
 
-    MyButton    button1     (BUTTON);
-    MyServo     servoX      (SERVO1);
-    MyServo     servoY      (SERVO2);
+    // define the parts of the cat toy.
+    // MyButton    button1     (BUTTON);
+    MySwitch    switch1     (SWITCH);
+    MyServo     servoX      (SERVO1,    70,    110,   random(1,4) / 40.0);
+    MyServo     servoY      (SERVO2,    20,    45,    random(1,4) / 40.0);
     MyJoystick  joystick    (joyStickX, joyStickY, joyStickBTN);
     MyLaser     laser       (LASER);
 
-    bool debug = false;
+    bool debug = true;
 
     class CatLaser {
 
@@ -39,9 +44,8 @@ namespace TheCatToy {
             String title = "The Cat Toy";
             bool state = false;
             bool manualMode = false;
-            bool mmState = false;
+            bool manualModeState = false;
             bool ledState = false;
-            unsigned long prevTime = millis();
         
         public:
             bool running = false;
@@ -51,10 +55,12 @@ namespace TheCatToy {
             }
 
             void run() {
+                running = switch1.state();
                 if (running) {
+                    laser.setState(HIGH);
                     if (manualMode) {
-                        int x = map(joystick.x(), 0, 1000, servoX.minimum, servoX.maximum);
-                        int y = map(joystick.y(), 0, 1000, servoY.minimum, servoY.maximum);
+                        int x = map(joystick.x(), 0, 4095, servoX.minimum, servoX.maximum);
+                        int y = map(joystick.y(), 0, 4095, servoY.minimum, servoY.maximum);
 
                         if (debug) {
                             Serial.print("X: ");
@@ -63,76 +69,76 @@ namespace TheCatToy {
                             Serial.println(joystick.y());
                         }
                         
-                        servoX.move(x);
-                        servoY.move(y);
+                        servoX.moveTo(x);
+                        servoY.moveTo(y);
+
+                        delay(10);
                     }
                     else {
-                        if (debug) {Serial.println("Auto Mode Running");}
-                        autoMove(random(5,25));
+                        // if (debug) {Serial.println("Auto Mode Running");}
+                        this->autoMove();
                     }
                 }  
                 else if (!running) {
-                    if (debug) {Serial.println("Not Running... Centered.");}
-                    servoX.move(servoX.midpoint);
-                    servoY.move(servoY.midpoint);
+                    laser.setState(LOW);
+                    // if (debug) {Serial.println("Not Running... Centered.");}
+                    servoX.moveTo(servoX.midpoint);
+                    servoY.moveTo(servoY.midpoint);
                 }
             }
 
             void startstop() {
-                if ( !state & button1.state() ) {
+                if ( !this->state & switch1.state() ) {
                     laser.changeState();
-                    running = !running;
-                    state = true;
+                    this->running = !this->running;
+                    this->state = true;
                     delay(75);
                 } 
-                else if ( state & !button1.state() ) {
-                    state = false;
+                else if ( this->state & !switch1.state() ) {
+                    this->state = false;
                 }
             }
 
             void setManualMode() {
-                if ( ( !mmState ) & joystick.getBtnState() ) {
-                    mmState = true;
-                    manualMode = !manualMode;
-                    ledState = !ledState;
-                    digitalWrite(led13, ledState);
+                if ( ( !this->manualModeState ) & joystick.getBtnState() ) {
+                    this->manualModeState = true;
+                    this->manualMode = !this->manualMode;
+                    this->ledState = !this->ledState;
+                    digitalWrite(led13, this->ledState);
                     delay(75);
                 }
-                else if ( mmState & ( !joystick.getBtnState() ) ) {
-                    mmState = false;
+                else if ( this->manualModeState & ( !joystick.getBtnState() ) ) {
+                    this->manualModeState = false;
                 }
             }
 
-            void autoMove(int rate) {
+            void autoMove() {
                 // auto move stuff...
-                // use sin wave to oscilate between servo min and max.
+                servoX.checkDirection();
+                servoY.checkDirection();
 
-                // servoX.servoAngle = servoX.servoAngle * (millis() - prevTime);
-                // servoX.move(servoX.servoAngle);
+                servoX.angle += (servoX.servoDirection * servoX.rate);
+                servoY.angle += (servoY.servoDirection * servoY.rate);
 
-                // servoY.servoAngle = servoY.servoAngle * (millis() - prevTime);
-                // servoY.move(servoY.servoAngle);
+                Serial.print("ServoX: ");
+                Serial.print(servoX.angle);
+                Serial.print(" - RateX: ");
+                Serial.print(servoX.rate);
+                Serial.print(" | ServoY: ");
+                Serial.print(servoY.angle);
+                Serial.print(" - RateY: ");
+                Serial.print(servoY.rate);
+                Serial.println(".");
 
-                if (debug) {
-                    Serial.println("STARTING TEST");
-                    Serial.print("RATE: ");
-                    Serial.println(rate);
+                servoX.move();
+                servoY.move();
+
+                int diceRollPause = random(0,random(10,25));
+                if (diceRollPause == 0){
+                    delay(random(125, 2000));
                 }
 
-                // for (int pos=1; pos<179; pos++) {
-                //     Serial.println(pos);
-                //     servoX.servo.write(pos);
-                //     delay(500);
-                // }
-
-                // delay(3500);
-
-                // int radX = servoX.servoAngle * 0.0174532 + servoX.servoDirection;
-                // servoX.move(radX);
-
-                // int radY = servoY.servoAngle * 0.0174532 + servoY.servoDirection;
-                // servoY.move(radY);
-
+                delay(25);
             }
 
     };  // end of class CatLaser

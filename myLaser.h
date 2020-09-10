@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 
-namespace myLaserSetup {
+namespace TheCatToy {
 
     class MyLaser {
         private:
