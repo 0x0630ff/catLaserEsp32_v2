@@ -17,6 +17,7 @@ The latest attempt and making my cat(s) happy.
     * 0 degrees on bottom servo should be pointing left
     * 180 pointing right
     * 90 straight ahead.
+    * (this all could be fixed by adjusting the servo arms alignment.. im being lazy though)...
 - Get the timers to work.
     * Servos are moving too fast. (or too slow or even not at all...)
 - Get auto mode to work...
@@ -39,6 +40,8 @@ The latest attempt and making my cat(s) happy.
     * Connected to pin 21.
     * any basic momentary push button switch. 
     * (You can edit the code to work with an spst slide switch too...)
+- 1x SPST Switch - https://www.adafruit.com/product/805
+    * current version uses a switch instead of a button. less hassle, no debounce to deal with.
 - 1x Joystick - https://www.adafruit.com/product/512
     * X stick connected to pin 14
     * Y stick connected to pin 32
