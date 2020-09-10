@@ -36,7 +36,7 @@ namespace TheCatToy {
     MyJoystick  joystick    (joyStickX, joyStickY, joyStickBTN);
     MyLaser     laser       (LASER);
 
-    bool debug = true;
+    bool debug = false;
 
     class CatLaser {
 
@@ -120,15 +120,17 @@ namespace TheCatToy {
                 servoX.angle += (servoX.servoDirection * servoX.rate);
                 servoY.angle += (servoY.servoDirection * servoY.rate);
 
-                Serial.print("ServoX: ");
-                Serial.print(servoX.angle);
-                Serial.print(" - RateX: ");
-                Serial.print(servoX.rate);
-                Serial.print(" | ServoY: ");
-                Serial.print(servoY.angle);
-                Serial.print(" - RateY: ");
-                Serial.print(servoY.rate);
-                Serial.println(".");
+                if (debug) {
+                    Serial.print("ServoX: ");
+                    Serial.print(servoX.angle);
+                    Serial.print(" - RateX: ");
+                    Serial.print(servoX.servoDirection * servoX.rate);
+                    Serial.print(" | ServoY: ");
+                    Serial.print(servoY.angle);
+                    Serial.print(" - RateY: ");
+                    Serial.print(servoY.servoDirection * servoY.rate);
+                    Serial.println(".");
+                }
 
                 servoX.move();
                 servoY.move();
