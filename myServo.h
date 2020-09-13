@@ -17,20 +17,20 @@ namespace TheCatToy {
             Servo servo;
             float angle;
             float servoDirection = 1;
-            float rate;
+            int rate;
             int minimum;
             int maximum;
             int range;
             int midpoint;
-            float rateFactor = 0.2;
+            float rateFactor = 4.0;
 
-            MyServo(int _servo, int _min = 0, int _max = 180, int _rate=1) {
+            MyServo(int _servo, int _min=0, int _max=180, float _rate=1.0) {
                 Serial.println(_servo);
                 this->servoPin = _servo;
                 this->minimum = _min;
                 this->maximum = _max;
                 this->range = _max - _min;
-                this->rate = _rate * this->rateFactor;
+                this->rate = _rate / this->rateFactor;
                 this->midpoint = this->minimum + (this->range / 2);
                 this->angle = this->midpoint;
                 this->init();

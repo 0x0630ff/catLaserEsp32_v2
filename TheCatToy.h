@@ -9,11 +9,6 @@
 #include "mySwitch.h"
 #include "myJoystick.h"
 
-// using namespace myServoSetup;
-// using namespace myButtonSetup;
-// using namespace mySwitchSetup;
-// using namespace myJoystickSetup;
-// using namespace myLaserSetup;
 
 namespace TheCatToy {
 
@@ -31,8 +26,8 @@ namespace TheCatToy {
     // define the parts of the cat toy.
     // MyButton    button1     (BUTTON);
     MySwitch    switch1     (SWITCH);
-    MyServo     servoX      (SERVO1,    70,    110,   random(1,4) / 40.0);
-    MyServo     servoY      (SERVO2,    20,    45,    random(1,4) / 40.0);
+    MyServo     servoX      (SERVO1,    50,    130,   (random(1,4)/60.0));
+    MyServo     servoY      (SERVO2,    25,    45,    (random(1,4)/60.0));
     MyJoystick  joystick    (joyStickX, joyStickY, joyStickBTN);
     MyLaser     laser       (LASER);
 
@@ -45,7 +40,7 @@ namespace TheCatToy {
             bool state = false;
             bool manualMode = false;
             bool manualModeState = false;
-            bool ledState = false;
+            bool ledState = false; 
         
         public:
             bool running = false;
@@ -134,8 +129,8 @@ namespace TheCatToy {
 
                 servoX.move();
                 servoY.move();
-
-                int diceRollPause = random(0,random(10,25));
+                
+                int diceRollPause = random(0,random(4,25));
                 if (diceRollPause == 0){
                     delay(random(125, 2000));
                 }
