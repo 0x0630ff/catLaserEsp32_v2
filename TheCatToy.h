@@ -70,13 +70,13 @@ namespace TheCatToy {
                         delay(10);
                     }
                     else {
-                        // if (debug) {Serial.println("Auto Mode Running");}
+                        if (debug) {Serial.println("Auto Mode Running");}
                         this->autoMove();
                     }
                 }  
                 else if (!running) {
                     laser.setState(LOW);
-                    // if (debug) {Serial.println("Not Running... Centered.");}
+                    if (debug) {Serial.println("Not Running... Centered.");}
                     servoX.moveTo(servoX.midpoint);
                     servoY.moveTo(servoY.midpoint);
                 }
@@ -135,7 +135,8 @@ namespace TheCatToy {
                     delay(random(125, 2000));
                 }
 
-                delay(25);
+                delay(25);  // let the servo breath...
+                
             }
 
     };  // end of class CatLaser
