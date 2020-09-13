@@ -70,15 +70,19 @@ namespace TheCatToy {
                         delay(10);
                     }
                     else {
-                        if (debug) {Serial.println("Auto Mode Running");}
                         this->autoMove();
+                        if (debug) {
+                            Serial.println("Auto Mode Running");
+                        }
                     }
                 }  
                 else if (!running) {
                     laser.setState(LOW);
-                    if (debug) {Serial.println("Not Running... Centered.");}
                     servoX.moveTo(servoX.midpoint);
                     servoY.moveTo(servoY.midpoint);
+                    if (debug) {
+                        Serial.println("Not Running... Centered.");
+                    }
                 }
             }
 
