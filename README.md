@@ -21,6 +21,7 @@ The latest attempt and making my cat(s) happy.
 - Get the timers to work.
     * Servos are moving too fast. (or too slow or even not at all...)
 - Get auto mode to work...
+- USE DUAL CORES!
 
 #### Plans:
 - Add dual core usage for the ESP32's two cores.
