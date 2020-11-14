@@ -1,4 +1,4 @@
-# The Cat Laser Toy - V2.
+# The Cat Laser Toy - V2.2.
 The latest attempt and making my cat(s) happy.
 
 #
@@ -20,12 +20,13 @@ The latest attempt and making my cat(s) happy.
     * (this all could be fixed by adjusting the servo arms alignment.. im being lazy though)...
 - Get the timers to work.
     * Servos are moving too fast. (or too slow or even not at all...)
-- Get auto mode to work...
+- Get auto mode to work... <-- this more or less works right now..
 - USE DUAL CORES!
 
 #### Plans:
 - Add dual core usage for the ESP32's two cores.
 - Incorporate the Blynk library to use remote control via wifi.
+- Web UI?
 - Add bluetooth/ble
 - Add more buttons or switches to change to different running modes.
 - Make a second one for my other cat!
@@ -37,17 +38,16 @@ The latest attempt and making my cat(s) happy.
     * Other boards can be used if necesary. (Untested, code writen for esp32)
 - 1x Laser diode - https://www.adafruit.com/product/1054
     * Connected to pin 12 on ESP32 Feather Huzzah32
-- 1x Push Button - https://www.adafruit.com/product/367
+- 3x Push Buttons - https://www.adafruit.com/product/367
     * Connected to pin 21.
     * any basic momentary push button switch. 
-    * (You can edit the code to work with an spst slide switch too...)
+    * These will control the modes. 
+    * These also share same button input pins as the display.
+- 1x OLED FeatherWing display - ..insert link
+    * Shows status and what not.
+    * show some cute cat images.
 - 1x SPDT Switch - https://www.adafruit.com/product/805
     * current version uses a switch instead of a button. less hassle, no debounce to deal with.
-- 1x Joystick - https://www.adafruit.com/product/512
-    * X stick connected to pin 14
-    * Y stick connected to pin 32
-    * Joystick button switch connected to pin 15
-    * Any joy stick with a center button press
 - 2x Servos and servo arm kit (Mini Pan-Tilt Kit) - https://www.adafruit.com/product/1967
     * Bottom servo (Horizontal movement) connected to pin 33
     * Top servo (Vertical movement) connected to pin 27

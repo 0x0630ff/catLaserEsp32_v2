@@ -1,0 +1,3 @@
+uses switch as on off.
+random servo speeds.
+small amount of text displayed.

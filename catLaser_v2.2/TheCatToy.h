@@ -10,7 +10,8 @@
 #include "myDisplay.h"
 
 namespace TheCatToy {
-    String catToyVersionNumber = "2.2"
+    String catToyVersionNumber = "2.2";
+    
     // define pins
     int SWITCH          =   21;     // input (Start/Stop)
     int BUTTON_A        =   15;     // input
