@@ -7,140 +7,181 @@
 #include "myServo.h"
 #include "myButton.h"
 #include "mySwitch.h"
-#include "myJoystick.h"
-
+#include "myDisplay.h"
 
 namespace TheCatToy {
-
     // define pins
-    int SWITCH          =   21;
-    int BUTTON          =   21;     // input
-    int joyStickX       =   14;     // input
-    int joyStickY       =   32;     // input
-    int joyStickBTN     =   15;     // input
+    int SWITCH          =   21;     // input (Start/Stop)
+    int BUTTON_A        =   15;     // input
+    int BUTTON_B        =   32;     // input
+    int BUTTON_C        =   14;     // input
     int SERVO1          =   33;     // output - bottom servo
     int SERVO2          =   27;     // output - upper servo
     int LASER           =   12;     // output
     int led13           =   13;     // output
 
     // define the parts of the cat toy.
-    // MyButton    button1     (BUTTON);
-    MySwitch    switch1     (SWITCH);
-    MyServo     servoX      (SERVO1,    50,    130,   (random(1,4)/60.0));
-    MyServo     servoY      (SERVO2,    25,    45,    (random(1,4)/60.0));
-    MyJoystick  joystick    (joyStickX, joyStickY, joyStickBTN);
-    MyLaser     laser       (LASER);
+    MyDisplay   display;
+    MyButton    buttonA     (BUTTON_A);
+    MyButton    buttonB     (BUTTON_B);
+    MyButton    buttonC     (BUTTON_C);
+    // MyButton    switch1(SWITCH);  // using this if buttons are used ...
+    MySwitch    switch1(SWITCH);  // use this if switch is better.
+    MyServo     servoX(SERVO1,    40,    130);
+    MyServo     servoY(SERVO2,    20,    55);
+    MyLaser     laser(LASER);
 
     bool debug = false;
+    bool napStats = true;
 
     class CatLaser {
-
         private:
             String title = "The Cat Toy";
             bool state = false;
-            bool manualMode = false;
-            bool manualModeState = false;
-            bool ledState = false; 
+            int mode = 0;
+            bool running = false;
+            bool pressedA = false;
+            bool pressedB = false;
+            bool pressedC = false;
+            bool randomize = false;
+            bool TakeNap = false;
+            int PawsTimer = 0;  //Ha! Its a PawsTimer! Get it?
         
         public:
-            bool running = false;
-
             CatLaser() {
                 pinMode(led13, OUTPUT);
             }
 
+            void init() {
+                display.init();
+                display.showOpener();
+                if (debug) {
+                    Serial.print("ServoX speed: ");
+                    Serial.print(servoX.speed);
+                    Serial.print(" ServoY speed: ");
+                    Serial.println(servoY.speed);
+                }
+                delay(2000);
+            }
+
             void run() {
-                running = switch1.state();
-                if (running) {
+                this->running = switch1.state();
+                // this->checkNapTimer();
+                if ((this->running) & (!this->TakeNap)) {
                     laser.setState(HIGH);
-                    if (manualMode) {
-                        int x = map(joystick.x(), 0, 4095, servoX.minimum, servoX.maximum);
-                        int y = map(joystick.y(), 0, 4095, servoY.minimum, servoY.maximum);
-
-                        if (debug) {
-                            Serial.print("X: ");
-                            Serial.print(joystick.x());
-                            Serial.print(" | Y: ");
-                            Serial.println(joystick.y());
-                        }
-                        
-                        servoX.moveTo(x);
-                        servoY.moveTo(y);
-
-                        delay(10);
-                    }
-                    else {
-                        this->autoMove();
-                        if (debug) {
-                            Serial.println("Auto Mode Running");
-                        }
-                    }
+                    this->autoMove();
+                    this->rollDice();
                 }  
-                else if (!running) {
+                else if ((this->running) & (this->TakeNap)) {
+                    // this is what to do while a nap is taken.
+                }
+                else if (!this->running) {
                     laser.setState(LOW);
                     servoX.moveTo(servoX.midpoint);
                     servoY.moveTo(servoY.midpoint);
-                    if (debug) {
-                        Serial.println("Not Running... Centered.");
-                    }
                 }
+                display.updateStats(this->running, this->mode);
+                delay(10);
             }
-
+            
             void startstop() {
                 if ( !this->state & switch1.state() ) {
                     laser.changeState();
                     this->running = !this->running;
                     this->state = true;
-                    delay(75);
+                    delay(125);
                 } 
                 else if ( this->state & !switch1.state() ) {
                     this->state = false;
                 }
             }
 
-            void setManualMode() {
-                if ( ( !this->manualModeState ) & joystick.getBtnState() ) {
-                    this->manualModeState = true;
-                    this->manualMode = !this->manualMode;
-                    this->ledState = !this->ledState;
-                    digitalWrite(led13, this->ledState);
-                    delay(75);
+            void buttonStateA() {
+                if ( (this->mode < 2) & (!this->pressedA) ) {
+                    this->pressedA = true;
+                    this->mode++;
                 }
-                else if ( this->manualModeState & ( !joystick.getBtnState() ) ) {
-                    this->manualModeState = false;
+                else if ( (this->pressedA) & (!buttonA.state() ) ) {
+                    this->pressedA = false;
+                }
+            }
+
+            void buttonStateB() {
+                if ( (this->mode > 0) & (!this->pressedB) ) {
+                    this->pressedB = true;
+                    this->mode--;
+                }
+                else if ( (this->pressedB) & (!buttonB.state() ) ) {
+                    this->pressedB = false;
+                }
+            }
+
+            void buttonStateC() {
+                if (!this->pressedC) {
+                    this->pressedC = true;
+                    Serial.println("Figure out what to do w/ button C...");
+                }
+                else if ( (this->pressedC) & (!buttonC.state() ) ) {
+                    this->pressedC = false;
+                }
+            }
+
+            void rollDice() {
+                int diceRoll = random(0, random(10,100));
+                if (diceRoll == 0) { 
+                    this->PawsTimer = random(250, 1500);
+                    if (napStats) {
+                        Serial.println(" ");
+                        Serial.print(" (^ↀ.ↀ^ )~  Nap Time: ");
+                        Serial.println(this->PawsTimer);
+                        Serial.println("      |\\      _,,,---,,");
+                        Serial.println("ZZZzz /,`.-'`'    -.  ;-;;,_");
+                        Serial.println("     |,4-  ) )-,_. ,\\ (  `'-'");
+                        Serial.println("    '---''(_/--'  `-'\\_)");
+                    }
+                    delay(PawsTimer);
+                }
+            }
+
+            void checkNapTimer() {
+                int now = millis();
+                if (this->PawsTimer >= now) {
+                    Serial.println("Taking Nap.");
+                    this->TakeNap = true;
+                }
+                else if (this->PawsTimer < now) {
+                    this->rollDice();
+                    this->TakeNap = false;
+                }
+            }
+
+            void checkMoveTimers(MyServo *servo) {
+                if (servo->moveTimer <= millis()) {
+                    servo->makeMove();
                 }
             }
 
             void autoMove() {
                 // auto move stuff...
-                servoX.checkDirection();
-                servoY.checkDirection();
+                this->checkMoveTimers(&servoX);  // move servoX...
+                this->checkMoveTimers(&servoY);  // move servoY...
 
-                servoX.angle += (servoX.servoDirection * servoX.rate);
-                servoY.angle += (servoY.servoDirection * servoY.rate);
+                if (this->randomize) {
+                    servoX.randomizeSpeed();
+                    servoY.randomizeSpeed();
+                }
 
                 if (debug) {
-                    Serial.print("ServoX: ");
+                    Serial.print("Servo X angle: ");
                     Serial.print(servoX.angle);
-                    Serial.print(" - RateX: ");
-                    Serial.print(servoX.servoDirection * servoX.rate);
-                    Serial.print(" | ServoY: ");
+                    Serial.print(" - speed: ");
+                    Serial.print(servoX.speed);
+                    Serial.print(" | Servo Y angle: ");
                     Serial.print(servoY.angle);
-                    Serial.print(" - RateY: ");
-                    Serial.print(servoY.servoDirection * servoY.rate);
+                    Serial.print(" - speed: ");
+                    Serial.print(servoY.speed);
                     Serial.println(".");
                 }
-
-                servoX.move();
-                servoY.move();
-                
-                int diceRollPause = random(0,random(4,25));
-                if (diceRollPause == 0){
-                    delay(random(125, 2000));
-                }
-
-                delay(25);  // let the servo breath...
-                
             }
 
     };  // end of class CatLaser
