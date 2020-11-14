@@ -26,7 +26,7 @@ void pressedButtonStateC() {
 
 void setup() {
     Serial.begin(115200);
-    Serial.println("Starting CAT LASER TOY V2b!!!!");
+    Serial.println("Starting CAT LASER TOY V" + catToyVersionNumber + "!!!!");
 
     // attachInterrupt(digitalPinToInterrupt(SWITCH), startStop, CHANGE);
     attachInterrupt(digitalPinToInterrupt(BUTTON_A), pressedButtonStateA, CHANGE);

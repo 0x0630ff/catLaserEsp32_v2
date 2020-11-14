@@ -10,6 +10,7 @@
 #include "myDisplay.h"
 
 namespace TheCatToy {
+    String catToyVersionNumber = "2.2"
     // define pins
     int SWITCH          =   21;     // input (Start/Stop)
     int BUTTON_A        =   15;     // input
@@ -36,7 +37,7 @@ namespace TheCatToy {
 
     class CatLaser {
         private:
-            String title = "The Cat Toy";
+            String title = "The Cat Toy " + catToyVersionNumber;
             bool state = false;
             int mode = 0;
             bool running = false;
